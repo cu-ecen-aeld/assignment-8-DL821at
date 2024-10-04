@@ -1,6 +1,5 @@
 config BR2_PACKAGE_AESD_ASSIGNMENTS
     bool "aesd-assignments"
-    depends on BR2_INSTALL_LIBSTDCPP # Modify based on actual dependencies
     help
       Includes the writer executable, finder.sh, and tester.sh in the kernel image.
       Used to understand Buildroot external trees and package builds.
