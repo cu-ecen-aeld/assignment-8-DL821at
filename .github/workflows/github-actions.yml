@@ -12,8 +12,14 @@ jobs:
         timeout-minutes: 120
         steps:
           - uses: actions/checkout@v2
+            with:
+              fetch-depth: 0
+          - name: Disable SSL Verification for Git
+            run: git config --global http.sslVerify false
           - name: Checkout submodules
             run: git submodule update --init --recursive
+          - name: Re-enable SSL Verification for Git
+            run: git config --global http.sslVerify true
           - uses: webfactory/ssh-agent@v0.5.3
             with:
                 ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
