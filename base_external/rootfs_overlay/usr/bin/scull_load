@@ -1,0 +1,11 @@
+#!/bin/sh
+echo "Loading scull module..."
+modprobe scull
+
+echo "Creating device nodes..."
+mknod /dev/scull0 c 240 0
+mknod /dev/scull1 c 240 1
+mknod /dev/scull2 c 240 2
+mknod /dev/scull3 c 240 3
+chmod 666 /dev/scull*
+

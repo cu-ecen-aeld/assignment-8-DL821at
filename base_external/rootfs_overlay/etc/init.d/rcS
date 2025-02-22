@@ -1,0 +1,2 @@
+echo "/etc/init.d/S98lddmodules start" >> base_external/rootfs_overlay/etc/init.d/rcS
+

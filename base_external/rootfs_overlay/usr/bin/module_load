@@ -1,0 +1,6 @@
+#!/bin/sh
+echo "Loading hello module..."
+modprobe hello
+echo "Loading faulty module..."
+modprobe faulty
+
