@@ -1,0 +1,22 @@
+#!/bin/sh
+case "$1" in
+    start)
+        echo "Loading scull module..."
+        modprobe scull
+        echo "Loading misc-modules (hello, faulty)..."
+        modprobe hello
+        modprobe faulty
+        ;;
+    stop)
+        echo "Unloading modules..."
+        rmmod faulty
+        rmmod hello
+        rmmod scull
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+        ;;
+esac
+exit 0
+
