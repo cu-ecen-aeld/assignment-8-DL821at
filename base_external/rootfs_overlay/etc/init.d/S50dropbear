@@ -5,14 +5,21 @@
 case "$1" in
   start)
     echo "Starting dropbear SSH server after a short delay..."
-    # Wait 5 seconds to allow the network and DHCP to settle
+    # Wait for the network to come up
     sleep 5
 
-    # Check for host keys and generate them if they don't exist
+    # Ensure /etc/dropbear exists and is writable
+    if [ ! -d /etc/dropbear ]; then
+      mkdir -p /etc/dropbear
+      chmod 755 /etc/dropbear
+    fi
+
+    # Check and generate RSA host key if missing
     if [ ! -f /etc/dropbear/dropbear_rsa_host_key ]; then
       echo "Generating RSA host key..."
       dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
     fi
+    # Similarly for ECDSA and ED25519:
     if [ ! -f /etc/dropbear/dropbear_ecdsa_host_key ]; then
       echo "Generating ECDSA host key..."
       dropbearkey -t ecdsa -f /etc/dropbear/dropbear_ecdsa_host_key
@@ -23,8 +30,6 @@ case "$1" in
     fi
 
     echo "Starting dropbear..."
-    # Start dropbear with auto-generation flag (-R) as a fallback,
-    # log errors to stderr (-E), and explicitly bind to port 22 (-p 22).
     /usr/sbin/dropbear -R -E -p 22 &
     ;;
   stop)
