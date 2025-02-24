@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# S50dropbear - start/stop dropbear SSH server
+#
+case "$1" in
+  start)
+    echo "Starting dropbear SSH server after a short delay..."
+    # Wait 5 seconds to allow the network and DHCP to settle
+    sleep 5
+
+    # Check for host keys and generate them if they don't exist
+    if [ ! -f /etc/dropbear/dropbear_rsa_host_key ]; then
+      echo "Generating RSA host key..."
+      dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
+    fi
+    if [ ! -f /etc/dropbear/dropbear_ecdsa_host_key ]; then
+      echo "Generating ECDSA host key..."
+      dropbearkey -t ecdsa -f /etc/dropbear/dropbear_ecdsa_host_key
+    fi
+    if [ ! -f /etc/dropbear/dropbear_ed25519_host_key ]; then
+      echo "Generating ED25519 host key..."
+      dropbearkey -t ed25519 -f /etc/dropbear/dropbear_ed25519_host_key
+    fi
+
+    echo "Starting dropbear..."
+    # Start dropbear with auto-generation flag (-R) as a fallback,
+    # log errors to stderr (-E), and explicitly bind to port 22 (-p 22).
+    /usr/sbin/dropbear -R -E -p 22 &
+    ;;
+  stop)
+    echo "Stopping dropbear SSH server..."
+    killall dropbear
+    ;;
+  restart)
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+exit 0
