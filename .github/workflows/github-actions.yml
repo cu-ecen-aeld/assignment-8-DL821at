@@ -9,12 +9,13 @@ jobs:
     full-test:
         container: cuaesd/aesd-autotest:24-assignment7-buildroot
         runs-on: self-hosted
-        timeout-minutes: 480
+        timeout-minutes: 1440
         steps:
-          - uses: actions/checkout@v4
-            with:
-                submodules: true
-                fetch-depth: 0
+          - uses: actions/checkout@v2
+          - name: Checkout submodules
+            run: |
+              git submodule deinit -f .
+              git submodule update --init --recursive
           - uses: webfactory/ssh-agent@v0.5.3
             with:
                 ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
