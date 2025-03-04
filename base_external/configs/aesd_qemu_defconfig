@@ -2,25 +2,25 @@ BR2_aarch64=y
 
 # Unique to aesd_qemu_defconfig:
 BR2_DL_DIR="/home/dlee/dlcache"           # Download directory (aesd_qemu)
-BR2_SYSTEM_DHCP="eth0"                    # Set DHCP interface (aesd_qemu)
-BR2_TARGET_GENERIC_ROOT_PASSWD="root"     # [Added] Set default root password
-BR2_PACKAGE_DROPBEAR=y                    # Enable Dropbear SSH server (aesd_qemu)
-BR2_PACKAGE_HOST_MKPASSWD=y               # Host mkpasswd utility (aesd_qemu)
-BR2_PACKAGE_HOST_QEMU=y                   # Host QEMU support (aesd_qemu)
-BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE=y       # QEMU system mode support (aesd_qemu)
-
+BR2_TOOLCHAIN_EXTERNAL=y
+BR2_TARGET_GENERIC_ROOT_PASSWD="root"
+BR2_SYSTEM_DHCP="eth0"
 BR2_ROOTFS_OVERLAY="../base_external/rootfs_overlay"
+BR2_ROOTFS_POST_IMAGE_SCRIPT="board/qemu/post-image.sh"
+BR2_ROOTFS_POST_SCRIPT_ARGS="$(BR2_DEFCONFIG)"
 BR2_LINUX_KERNEL=y
-BR2_LINUX_KERNEL_USE_ARCH_DEFAULT_CONFIG=y
-BR2_PACKAGE_KMOD=y
-BR2_PACKAGE_KVMTOOL=y                     # Retained from a7_successful_build_defconfig
+BR2_LINUX_KERNEL_CUSTOM_VERSION=y
+BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="6.1.44"
+BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/qemu/aarch64-virt/linux.config"
+BR2_LINUX_KERNEL_NEEDS_HOST_OPENSSL=y
+BR2_PACKAGE_DROPBEAR=y
+BR2_PACKAGE_OPENSSH=y
 BR2_TARGET_ROOTFS_EXT2=y
 BR2_TARGET_ROOTFS_EXT2_4=y
 BR2_TARGET_ROOTFS_EXT2_SIZE="200M"
 # BR2_TARGET_ROOTFS_TAR is not set
+BR2_PACKAGE_HOST_QEMU=y
+BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE=y
 BR2_PACKAGE_AESD_ASSIGNMENTS=y
 BR2_PACKAGE_LDD=y
-
-# [Added] Enable BusyBox syslog daemon to capture kernel messages in /var/log/messages.
-BR2_PACKAGE_BUSYBOX=y
-BR2_BUSYBOX_CONFIG_FRAGMENT_FILES="board/qemu/syslogd.cfg"
