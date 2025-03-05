@@ -1,9 +1,0 @@
-#!/bin/sh
-echo "Starting system initialization..."
-/etc/init.d/S01syslogd start
-echo "Bringing up eth0..."
-ifconfig eth0 up
-echo "Starting DHCP client on eth0..."
-udhcpc -i eth0 &
-/etc/init.d/S50dropbear start
-/etc/init.d/S98lddmodules start
